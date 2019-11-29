@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="4b33161b-8ddf-4191-a730-f9ef57b1b92f" name="blog.st.com" url="http://47.107.232.133">
+        <fileTransfer host="47.107.232.133" port="22" rootFolder="/home/wwwroot/default/blog" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions controlEncoding="UTF8" dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
