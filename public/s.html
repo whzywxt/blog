@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<style>
+    #message{ border: 1px solid #ccc; width: 100%; height: 200px;overflow: auto;}
+    #conent{ width: 100%; height: 50px; border: 1px solid #ccc;}
+    .main{margin-top: 10px;}
+    #sendMessage{ width: 100%; border: 1px solid #ccc; background: blue; color: #fff; padding: 10px; font-weight: bold; font-size: 16px;}
+</style>
+<div>
+    <h1>聊天室</h1>
+    <div id="message">
+
+    </div>
+    <div class="main">
+        <textarea id="conent"></textarea>
+        <button id="sendMessage" onclick="sendMessage()">发送消息</button>
+    </div>
+</div>
+<!-- <script src="/static/js/jquery-3.3.1.min.js"></script> -->
+<script src="http://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script>
+    var username = 'user_'+Math.random();
+    //var wsServer = 'ws://192.168.10.10:19508';
+    //var wsServer = 'ws://159.138.137.49:19508';
+    //var wsServer = 'wss://screen.idvert.com/socket/';
+    var wsServer = 'ws://192.168.10.10:2345';
+    var websocket = new WebSocket(wsServer);
+    websocket.onopen = function (evt) {
+        console.log("Connected to WebSocket server.");
+    };
+    websocket.onclose = function (evt) {
+        console.log("Disconnected");
+    };
+	window.setInterval(function () { //每隔5秒钟发送一次心跳，避免websocket连接因超时而自动断开
+                var ping = {"type": "ping"};
+                //websocket.send(JSON.stringify(ping));
+                websocket.send("ping");
+            }, 5000);
+    function sendMessage(){
+        var content  =  document.getElementById('conent').value;
+        if(content == ''){
+            alert('请输入聊天内容');
+            return;
+        }
+        //|作为数据包分割线
+        var text = username+'|'+content;
+        websocket.send(text);
+    }
+    //监听服务端回推的消息
+    websocket.onmessage = function (evt) {
+        var message = evt.data;
+        var html = '<p>'+message+'</p>';
+        $("#message").append(html);
+        //成功将发送置空
+        document.getElementById("conent").value = "";
+    };
+    websocket.onerror = function (evt, e) {
+        console.log('Error occured: ' + evt.data);
+    };
+</script>
+</body>
+</html>
