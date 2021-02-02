@@ -14,5 +14,5 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
 
     $router->resource('users', 'UserController');
-
+    $router->resource('tracking', 'TrackingController');
 });
